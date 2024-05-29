@@ -1,6 +1,6 @@
 import datetime
 import socket
-import sys
+import sys, os
 
 
 def traceroute(hostname_or_address, max_hops=30, timeout=2):
@@ -35,7 +35,21 @@ def traceroute(hostname_or_address, max_hops=30, timeout=2):
 
 
 if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: python traceroute.py <hostname_or_address>")
+        sys.exit(1)
+
     dest_name = sys.argv[1]
-    print(f"traceroute to {dest_name}")
-    for i, v in enumerate(traceroute(dest_name)):
-        print(f"{i+1}\t{v[0]}\t{v[1]}")
+
+    filename = f"{dest_name}.txt"
+    if os.path.exists(filename):
+        os.remove(filename)
+
+    try:
+        with open(filename, "x") as file:
+            for i, v in enumerate(traceroute(dest_name)):
+                reg = f"{(i+1)}\t{v[0]}\t{v[1]}\n"
+                file.write(reg)
+    except Exception as e:
+        print(f"An error occured: {e}")
+        sys.exit(1)
