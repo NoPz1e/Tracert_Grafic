@@ -35,11 +35,16 @@ def traceroute(hostname_or_address, max_hops=30, timeout=2):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python traceroute.py <hostname_or_address>")
+    if len(sys.argv) > 3 or len(sys.argv) < 2:
+        print("Usage: python traceroute.py <hostname_or_address> <max_hops>")
         sys.exit(1)
 
     dest_name = sys.argv[1]
+    
+    try:
+        maxHops = sys.argv[2]
+    except (IndexError, ValueError):
+        maxHops = 30
 
     filename = f"{dest_name}.txt"
     if os.path.exists(filename):
@@ -47,7 +52,7 @@ if __name__ == "__main__":
 
     try:
         with open(filename, "x") as file:
-            for i, v in enumerate(traceroute(dest_name)):
+            for i, v in enumerate(traceroute(dest_name, max_hops=maxHops)):
                 reg = f"{(i+1)}\t{v[0]}\t{v[1]}\n"
                 file.write(reg)
     except Exception as e:
