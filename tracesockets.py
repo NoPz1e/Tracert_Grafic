@@ -14,7 +14,7 @@ def traceroute(hostname_or_address, max_hops=30, timeout=2):
         rx.settimeout(timeout)
         rx.bind(("", port))
         tx = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, proto_udp)
-        tx.setsockopt(socket.SOL_IP, socket.IP_TTL, ttl)
+        tx.setsockopt(socket.SOL_IP, socket.IP_TTL, ttl) 
         start = datetime.datetime.now()
         tx.sendto("".encode(), (dest_addr, port))
 
@@ -40,18 +40,19 @@ if __name__ == "__main__":
         sys.exit(1)
 
     dest_name = sys.argv[1]
-    
+
     try:
-        maxHops = sys.argv[2]
+        maxHops = int(sys.argv[2])
     except (IndexError, ValueError):
         maxHops = 30
 
-    filename = f"{dest_name}.txt"
+    filename = f"log.txt"
     if os.path.exists(filename):
         os.remove(filename)
 
     try:
         with open(filename, "x") as file:
+            file.write(f"{dest_name}\n")
             for i, v in enumerate(traceroute(dest_name, max_hops=maxHops)):
                 reg = f"{(i+1)}\t{v[0]}\t{v[1]}\n"
                 file.write(reg)
