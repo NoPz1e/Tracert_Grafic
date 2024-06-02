@@ -54,8 +54,8 @@ if __name__ == "__main__":
         with open(filename, "x") as file:
             file.write(f"{dest_name}\n")
             for i, v in enumerate(traceroute(dest_name, max_hops=maxHops)):
-                reg = f"{(i+1)}\t{v[0]}\t{v[1]}\n"
+                reg = (str({"iter": (i+1), "ip": v[0], "port": v[1]} ) + "\n")
                 file.write(reg)
     except Exception as e:
-        print(f"An error occured: {e}")
+        print(f"An error occurred: {e}")
         sys.exit(1)
