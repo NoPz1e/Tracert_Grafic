@@ -3,7 +3,7 @@ import ast
 import ui
 import map
 import iptoaddr
-
+    
 if not os.path.exists("log.txt"):
     print("Log file does not exist.")
     sys.exit()
@@ -26,6 +26,8 @@ for entry in strRouteLog[1:]:
     libRouteLog.append( ast.literal_eval(entry) )
 
 for log in libRouteLog:
+    if log["ip"] == "*":
+        continue
     coordsList.append( iptoaddr.retrieveCoordinates(log["ip"]) )
 
 map.draw_map(libRouteLog, coordsList, strRouteLog[0])

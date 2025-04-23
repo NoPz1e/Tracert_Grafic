@@ -9,8 +9,13 @@ import matplotlib.pyplot as plt
 def draw_map(routeLog, coordsList, dest):
     world = gpd.read_file(datasets.get_path('naturalearth_lowres'))
 
-    points = [{"name": log["ip"], "geometry": Point(coords["lat"], coords["lon"])}
-                                     for log, coords in zip(routeLog, coordsList)]
+    try:
+        points = [{"name": log["ip"], "geometry": Point(coords["lat"], coords["lon"])}
+                                        for log, coords in zip(routeLog, coordsList)]
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        sys.exit()
+
     gdf_points  = GeoDataFrame(points, crs="EPSG:4326")
 
     ax = world.plot(figsize=(10,10))

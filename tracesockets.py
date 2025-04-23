@@ -14,7 +14,7 @@ def traceroute(hostname_or_address, max_hops=30, timeout=2):
         rx.settimeout(timeout)
         rx.bind(("", port))
         tx = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, proto_udp)
-        tx.setsockopt(socket.SOL_IP, socket.IP_TTL, ttl) 
+        tx.setsockopt(socket.IPPROTO_IP, socket.IP_TTL, ttl) 
         start = datetime.datetime.now()
         tx.sendto("".encode(), (dest_addr, port))
 
